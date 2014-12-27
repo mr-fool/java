@@ -1,0 +1,111 @@
+public class MatrixRational
+{
+
+	private Rational matrix [][] = new Rational[0][0]; //initialize it in case of weird errors
+	private Rational transpose [][] = new Rational[0][0]; 
+	public MatrixRational(int size)
+	{
+		
+		matrix = new Rational[size][size];
+		for (int i = 0; i < size; i++)
+		{
+			for (int j= 0; j < size; j++)
+			{
+				matrix[i][j] = new Rational();
+				System.out.println(matrix[i][j]);
+			}
+		}
+	}	
+	public void setMatrix(Rational m[][]) 
+	{
+		for (int i = 0; i < matrix.length; i++)
+		{
+			for (int j= 0; j < matrix.length; j++)
+			{
+				this.matrix[i][j] = m[i][j];
+				System.out.println("setMatrix" +this.matrix[i][j]);
+			}
+		}
+			
+	}
+		
+	public Rational [][] matSqr() 
+	{
+		Rational sum = new Rational();
+		Rational sqrt[][] = new Rational [matrix.length][matrix.length];
+		for (int i = 0; i < matrix.length; i++)
+			{
+				for (int j= 0; j < matrix.length; j++)
+				{
+					for (int k = 0 ; k < matrix.length ; k++ )
+					{
+						sum = sum.add(matrix[i][k].multiplication( matrix[k][j]));
+					}
+					sqrt[i][j] = sum;
+				}
+					
+			}
+		return sqrt;
+			
+	}
+			
+
+	public boolean isSymmetric() 
+	{
+	for (int i = 0; i < matrix.length; ++i)
+	{
+			for (int j = 0; j < i; ++j)
+				{
+					if (!matrix[i][j].equals(matrix[j][i]))
+					{
+						System.out.println("Matrix is not symmetric");
+						return false;
+					}
+				}
+	}
+	System.out.println("Matrix is symmetric");
+	return true;
+	}
+	
+	public void transpose ()
+	{
+		//Checking if it is a square matrix
+		if (matrix.length == matrix[0].length) 
+		{
+			System.out.println("Condition for transpose is satisfied");
+			for (int i = 0; i < matrix.length; ++i)
+			{
+				for (int j = 0; j < i; ++j)
+				{
+					//Deep Copy
+					transpose [i][j] = new Rational( matrix[j][i].getNumerator(), matrix[j][i].getDenominator());
+				}
+			}
+		}
+		else 
+		{
+			System.err.println("Condition for transpose not satisfied");
+			System.exit(0);
+		}
+		
+	}	
+	public String toString(){
+		
+		String str = "";	// holds the running string
+		
+		// Loop through each index of the matrix
+		for (int i = 0; i < matrix.length; i++){
+			for (int j=0; j < matrix[i].length; j++){
+				// append the value at current index
+				str += (matrix[i][j].toString() + " ");
+			}
+			// end of row, append a new line
+			str += "\n";
+		}
+		
+		// return the string
+		return str;
+	}
+
+}
+
