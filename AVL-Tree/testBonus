@@ -1,0 +1,8 @@
+#! /bin/tcsh
+
+echo 'Dynamic Tests for before and after Methods'
+echo ' '
+
+javac testBeforeAfter.java
+java org.junit.runner.JUnitCore cpsc331.assignment3.testBeforeAfter
+echo ' '
