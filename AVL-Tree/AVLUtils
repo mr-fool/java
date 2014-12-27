@@ -1,0 +1,235 @@
+package cpsc331.assignment3;
+
+import org.junit.*;
+import static org.junit.Assert.*;
+import cpsc331.assignment3.FoundException;
+import cpsc331.assignment3.NotFoundException;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
+import cpsc331.collections.SortedMap;
+import cpsc331.collections.UndefinedException;
+
+class AVLUtils<K extends Comparable<K>, V> {
+
+ // Checks whether the data structure underlying an AVLSortedMap is
+ // really an AVL tree
+
+  boolean isAVL(AVLSortedMap<K, V> T) {
+
+    if (T.root() != null) {
+
+      AVLSortedMap<K, V>.AVLNode v = T.root();
+      return isAVL(v);
+
+    } else {
+
+      return true;
+
+    }
+
+  }
+
+  boolean isAVL(AVLSortedMap<K, V>.AVLNode v) {
+
+    // Confirm that the left subtree is an AVL tree if this is not empty
+
+    if (v.left() != null) {
+      if (!isAVL(v.left())) {
+        return false;
+      }
+    }
+
+    // Confirm that the right subtree is an AVL tree if this is not empty
+
+    if (v.right() != null) {
+      if (!isAVL(v.right())) {
+        return false;
+      }
+    }
+
+    // Confirm that the key stored at the left child is less than the
+    // value stored at this node, if the left child is not null
+
+    if (v.left() != null) {
+      K leftKey = v.left().key();
+      if (leftKey.compareTo(v.key()) >= 0) {
+        return false;
+      }
+    }
+
+    // Confirm that the key stored at the right child is greater than the
+    // value stored at this node, if this node is not null
+
+    if (v.right() != null) {
+      K rightKey = v.right().key();
+      if (rightKey.compareTo(v.key()) <= 0) {
+        return false;
+      }
+    }
+
+    // Confirm that the height of this AVL tree is correctly computed
+
+    int leftHeight = -1;
+    if (v.left() != null) {
+      leftHeight = v.left().height();
+    };
+    int rightHeight = -1;
+    if (v.right() != null) {
+      rightHeight = v.right().height();
+    };
+
+    int height;
+    if (leftHeight >= rightHeight) {
+      height = leftHeight + 1;
+    } else {
+       height = rightHeight + 1;
+    };
+    if (height != v.height()) {
+      return false;
+    };
+
+    // Confirm that the size of this AVL tree is correctly computed
+
+    int leftSize = 0;
+    if (v.left() != null) {
+      leftSize = v.left().size();
+    };
+    int rightSize = 0;
+    if (v.right() != null) {
+      rightSize = v.right().size();
+    };
+    if (v.size() != leftSize + rightSize + 1) {
+      return false;
+    };
+  
+    // Finally, confirm that the balance factor of the root is -1, 0, or 1
+  
+    if ((leftHeight > rightHeight + 1) || (rightHeight > leftHeight + 1)) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree1() {
+
+    Integer ZERO = new Integer(0);
+    Integer TWO = new Integer(2);
+    Integer FOUR = new Integer(4);
+    Integer SIX = new Integer(6);
+    Integer EIGHT = new Integer(8);
+
+    AVLSortedMap<Integer, Integer> T1
+       = new AVLSortedMap<Integer, Integer>(TWO, ZERO, null, null);
+    AVLSortedMap<Integer, Integer> T2
+       = new AVLSortedMap<Integer, Integer>(FOUR, TWO, T1, null);
+    AVLSortedMap<Integer, Integer> T3
+       = new AVLSortedMap<Integer, Integer>(EIGHT, SIX, null, null);
+    AVLSortedMap<Integer, Integer> T4
+       = new AVLSortedMap<Integer, Integer>(SIX, FOUR, T2, T3);
+    return T4;
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree2() {
+
+    Integer EIGHT = new Integer(8);
+    Integer TEN = new Integer(10);
+    Integer TWELVE = new Integer(12);
+    Integer FOURTEEN = new Integer(14);
+
+    AVLSortedMap<Integer, Integer> T1 = buildTree1();
+    AVLSortedMap<Integer, Integer> T2 
+       = new AVLSortedMap<Integer, Integer>(TWELVE, TEN, null, null);
+    AVLSortedMap<Integer, Integer> T3
+       = new AVLSortedMap<Integer, Integer>(FOURTEEN, TWELVE, T2, null);
+    AVLSortedMap<Integer, Integer> T4
+       = new AVLSortedMap<Integer, Integer>(TEN, EIGHT, T1, T3);
+    return T4;
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree3() {
+
+    Integer SIX = new Integer(6);
+    Integer EIGHT = new Integer(8);
+    Integer TEN = new Integer(10);
+    Integer TWELVE = new Integer(12);
+    Integer FOURTEEN = new Integer(14);
+
+    AVLSortedMap<Integer, Integer> T1 
+       = new AVLSortedMap<Integer, Integer>(EIGHT, SIX, null, null);
+    AVLSortedMap<Integer, Integer> T2
+       = new AVLSortedMap<Integer, Integer>(FOURTEEN, TWELVE, null, null);
+    AVLSortedMap<Integer, Integer> T3
+       = new AVLSortedMap<Integer, Integer>(TWELVE, TEN, null, T2);
+    AVLSortedMap<Integer, Integer> T4
+       = new AVLSortedMap<Integer, Integer>(TEN, EIGHT, T1, T3);
+    return T4;
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree4() {
+
+    Integer ZERO = new Integer(0);
+    Integer TWO = new Integer(2);
+    Integer FOUR = new Integer(4);
+    Integer SIX = new Integer(6);
+
+    AVLSortedMap<Integer, Integer> T1 = buildTree3();
+    AVLSortedMap<Integer, Integer> T2 
+       = new AVLSortedMap<Integer, Integer>(TWO, ZERO, null, null);
+    AVLSortedMap<Integer, Integer> T3
+       = new AVLSortedMap<Integer, Integer>(FOUR, TWO, T2, null);
+    AVLSortedMap<Integer, Integer> T4
+       = new AVLSortedMap<Integer, Integer>(SIX, FOUR, T3, T1);
+    return T4;
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree5() {
+
+    AVLSortedMap<Integer, Integer> T = new AVLSortedMap<Integer, Integer>();
+    int i = 0;
+
+    while (i < 1000) {
+      Integer ii = new Integer(i);
+      T.set(ii, ii);
+      i = i + 1;
+    };
+    return T;
+
+  }
+
+  AVLSortedMap<Integer, Integer> buildTree6() {
+
+    AVLSortedMap<Integer, Integer> T = new AVLSortedMap<Integer, Integer>();
+    int i = 0;
+    
+    while (i < 1000) {
+      Integer ii = new Integer(999 - i);
+      T.set(ii, ii);
+      i = i + 1;
+    };
+    return T;
+    
+  } 
+
+  AVLSortedMap<Integer, Integer> buildTree7() {
+
+    AVLSortedMap<Integer, Integer> T = new AVLSortedMap<Integer, Integer>();
+    int i = 0;
+    
+    while (i < 500) {
+      Integer ii = new Integer(i);
+      T.set(ii, ii);
+      Integer iii = new Integer(999 - i);
+      T.set(iii, iii);
+      i = i + 1;
+    };
+    return T;
+    
+  } 
+
+}
