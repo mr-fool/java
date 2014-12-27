@@ -1,0 +1,7 @@
+#! /bin/tcsh
+
+echo 'Dynamic Tests for the Second  Deterministic Algorithm'
+echo ' '
+
+javac testDQuick2.java
+java org.junit.runner.JUnitCore cpsc331.assignment4.testDQuick2
