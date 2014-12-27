@@ -1,0 +1,871 @@
+package cpsc331.assignment3;
+
+import cpsc331.assignment3.FoundException;
+import cpsc331.assignment3.NotFoundException;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
+import java.util.ListIterator;
+import cpsc331.collections.SortedMap;
+import cpsc331.collections.UndefinedException;
+
+/**
+ *
+ * Provides an AVL-Tree-based implementation of a Sorted Map
+ *
+ */
+
+class AVLSortedMap <K extends Comparable<K>, V> implements SortedMap<K, V> {
+
+  // Provides a node in an AVL tree
+  
+  class AVLNode {
+
+    // Data Fields
+
+    private K key;             // The kay for the mapping stored at this node
+    private V value;           // The value for the mapping stored at this node
+    private int height;        // The height of this node
+    private int size;          // The size of the subtree with this node as root
+    private AVLNode left;      // The left child of this node
+    private AVLNode right;     // The right child of this node
+    private AVLNode parent;    // The parent of this node
+
+    // Constructor; constucts an AVLNode with a given key and value whose
+    // left and right children ana parent are initially null
+
+    AVLNode(K key, V value) {
+
+      this.key = key;
+      this.value = value;
+      this.height = 0;
+      this.size = 1;
+      this.left = null;
+      this.right = null;
+      this.parent = null;
+
+    }  
+
+    // Returns the key stored at this node
+    
+    K key() {
+      return this.key;
+    }
+
+    // Returns the value stored at this node
+    
+    V value () {
+      return this.value;
+    }
+
+    // Sets the value stored at this node
+    
+    void setValue(V value) {
+      this.value = value;
+    }
+
+    // Returns the height of this node
+
+    int height() {
+      return this.height;
+    }
+
+    // Sets the height of this node
+    
+    void setHeight(int height) {
+      this.height = height;
+    }
+
+    // Returns the balance factor of this node
+
+    int balanceFactor() {
+      int leftHeight;
+      int rightHeight;
+      if (left == null) {
+        leftHeight = -1;
+      } else {
+        leftHeight = this.left.height();
+      };
+      if (right == null) {
+        rightHeight = -1;
+      } else {
+        rightHeight = this.right.height();
+      };
+      return leftHeight - rightHeight;
+    }
+
+    // Returns the size of this node
+
+    int size () {
+      return this.size;
+    }
+
+    // Sets the size of this node
+
+    void setSize(int size) {
+      this.size = size;
+    }
+
+    // Returns the left child of this node
+
+    AVLNode left() {
+      return this.left;
+    }
+
+    // Sets the left child of this node
+
+    void setLeft(AVLNode left) {
+      this.left = left;
+    }
+
+    // Returns the right child of this node
+    
+    AVLNode right() {
+      return this.right;
+    }
+
+    // Sets the right child of this node
+
+    void setRight(AVLNode right) {
+      this.right = right;
+    }
+
+    // Returns the parent of this node
+    
+    AVLNode parent() {
+      return this.parent;
+    }
+
+    // Sets the parent of this node
+
+    void setParent(AVLNode parent) {
+      this.parent = parent;
+    }
+
+    // Searches for a node with a given key in the subtree with this node
+    // as root
+
+    AVLNode search(K key) throws NotFoundException {
+
+      if (key.compareTo(this.key) < 0) {
+        if (this.left != null) {
+          return this.left.search(key);
+        } else {
+          throw new NotFoundException();
+        }
+      } else if (key.compareTo(this.key) > 0) {
+        if (this.right != null) {
+          return this.right.search(key);
+        } else {
+          throw new NotFoundException();
+        }
+      } else {
+        return this;
+      }
+
+    }
+
+    // Returns the index of a given key in the subtree with this node
+    // as root. A NoSuchElementException is thrown if the key is stored
+    // in this subtree.
+
+    int indexOf(K key) throws NoSuchElementException {
+
+      if (key.compareTo(this.key) < 0) {
+        if (this.left != null) {
+          return this.left.indexOf(key);
+        } else {
+          throw new NoSuchElementException();
+        }
+      } else if (key.compareTo(this.key) > 0) {
+        if (this.right != null) {
+          if (this.left != null) {
+            return this.left.size() + 1 + this.right.indexOf(key);
+          } else {
+            return 1 + this.right.indexOf(key);
+          }
+        } else {
+          throw new NoSuchElementException();
+        }
+      } else {
+        if (this.left != null) {
+          return this.left.size();
+        } else {
+          return 0;
+        }
+      }
+
+    }
+
+    // Returns the AVLNode with a given index in the subtree with this node
+    // as root. A NoSuchElementException is thrown if there is no such
+    // key
+
+    AVLNode get(int index) throws NoSuchElementException {
+
+      if ((index < 0) || (index >= this.size())) {
+        throw new NoSuchElementException();
+      } else if (this.left() == null) {
+        if (index == 0) {
+          return this;
+        } else {
+          return this.right.get(index-1);
+        }
+      } else if (index < this.left.size()) {
+        return this.left.get(index);
+      } else if (index == this.left.size()) {
+        return this;
+      } else {
+        return this.right.get(index-this.left.size()-1);
+      }
+
+    }   
+
+    // Returns the node storing the largest key that is less than the
+    // given key in the subtree with this node as root. A NoSuchElementException
+    // is thrown if the given key is less than or equal to all the keys stored
+    // in this subtree
+
+    AVLNode before(K k) throws NoSuchElementException {
+
+      if (k.compareTo(this.key) <= 0) {
+        if (this.left != null) {
+          return this.left.before(k);
+        } else {
+          throw new NoSuchElementException();
+        }
+      } else if (this.right != null) {
+        try {
+          return this.right.before(k);
+        } catch (NoSuchElementException ex) {
+          return this;
+        }
+      } else {
+        return this;
+      }
+
+    }
+
+    // Returns the node storing the smallest key that is greater than the
+    // given key in the subtree with this node as root. A NoSuchElementException
+    // is thrown if the given key is greater than or equal to all the keys
+    // stored in this subtree
+
+    AVLNode after(K k) throws NoSuchElementException {
+
+      if (k.compareTo(this.key) < 0) {
+        if (this.left != null) {
+          try {
+            return this.left.after(k);
+          } catch (NoSuchElementException ex) {
+            return this;
+          }
+        } else {
+          return this;
+        }
+      } else if (this.right != null) {
+        return this.right.after(k);
+      } else {
+        throw new NoSuchElementException();
+      }
+
+    }
+
+    // Updates the height and size of this node (called during a rotation)
+
+    private void updateHeight() {
+      int leftHeight, rightHeight, leftSize, rightSize;
+      if (this.left != null) {
+        leftHeight = this.left.height();
+        leftSize = this.left.size();
+      } else {
+        leftHeight = -1;
+        leftSize = 0;
+      };
+      if (this.right != null) {
+        rightHeight = this.right.height();
+        rightSize = this.right.size();
+      } else {
+        rightHeight = -1;
+        rightSize = 0;
+      };
+      if (leftHeight >= rightHeight) {
+        this.height = leftHeight + 1;
+      } else {
+        this.height = rightHeight + 1;
+      };
+      this.size = leftSize + rightSize + 1;
+    }
+
+    // Updates the size of this node and its ancestors
+
+    private void updateSize() {
+      int leftSize, rightSize;
+      if (this.left != null) {
+        leftSize = this.left.size();
+      } else {
+        leftSize = 0;
+      };
+      if (this.right != null) {
+        rightSize = this.right.size();
+      } else {
+        rightSize = 0;
+      };
+      this.size = leftSize + rightSize + 1;
+      if (this.parent != null) {
+        this.parent.updateSize();
+      }
+    }
+
+    // Implements a left rotation at this node, assuming that the right
+    // child of this node is not null
+
+    private void rotateLeft() {
+
+      AVLNode alpha = this;
+      AVLNode beta = this.right;
+      AVLNode T2 = beta.left();
+
+      if (this.parent == null) {
+        root = beta;
+      } else if (this.key.compareTo(this.parent.key()) < 0) {
+        this.parent.setLeft(beta);
+      } else {
+        this.parent.setRight(beta);
+      };
+      beta.setParent(parent);
+
+      alpha.setParent(beta);
+      beta.setLeft(alpha);
+
+      if (T2 != null) {
+        T2.setParent(alpha);
+      } ;
+      alpha.setRight(T2);
+
+      alpha.updateHeight();
+      beta.updateHeight();
+
+    } 
+
+    // Implements a right rotation at this node, assuming that the left
+    // child of this node is not null
+
+    private void rotateRight() {
+
+      AVLNode alpha = this;
+      AVLNode beta = this.left;
+      AVLNode T2 = beta.right;
+
+      if (this.parent == null) {
+        root = beta;
+      } else if (this.key.compareTo(this.parent.key()) < 0) {
+        this.parent.setLeft(beta);
+      } else {
+        this.parent.setRight(beta);
+      };
+      beta.setParent(parent);
+
+      alpha.setParent(beta);
+      beta.setRight(alpha);
+
+      if (T2 != null) {
+        T2.setParent(alpha);
+      };
+      alpha.setLeft(T2);
+
+      alpha.updateHeight();
+      beta.updateHeight();
+
+    }
+
+    // Implements the regular part of an insertion operation, returning
+    // a reference to the leaf that was created
+
+    private AVLNode regular_insert(K key, V value) throws FoundException {
+
+      if (key.compareTo(this.key) < 0) {
+        if (this.left != null) {
+          return this.left.regular_insert(key, value);
+        } else {
+          AVLNode leaf = new AVLNode(key, value);
+          this.left = leaf;
+          leaf.setParent(this);
+          this.updateSize();
+          return leaf;
+        }
+      } else if (key.compareTo(this.key) > 0) {
+        if (this.right != null) {
+          return this.right.regular_insert(key, value);
+        } else {
+          AVLNode leaf = new AVLNode(key, value);
+          this.right = leaf;
+          leaf.setParent(this);
+          this.updateSize();
+          return leaf;
+        }
+      } else {
+        throw new FoundException();
+      }
+
+    }
+
+    // Completes an insertion by updating heights and checking balance factors
+    // until either it is discovered that this tree is an AVL tree or a left
+    // or right rotation restores it as one
+
+    private void completeInsertion() {
+
+      int oldHeight = this.height;
+      this.updateHeight();
+      if (this.balanceFactor() == 2) {
+        AVLNode beta = this.left;
+        if (beta.balanceFactor() == 1) {    // Left-Left Case
+          this.rotateRight();
+        } else {                            // Left-Right Case
+          beta.rotateLeft();
+          this.rotateRight();
+        }
+      } else if (this.balanceFactor() == -2) {
+        AVLNode beta = this.right;
+        if (beta.balanceFactor() == -1) {  // Right-Right Case
+          this.rotateLeft();
+        } else {                           // Right-Left Case
+          beta.rotateRight();
+          this.rotateLeft();   
+        }
+      } else if (oldHeight != this.height) { // There may be a problem farther up
+        if (this.parent != null) {
+          this.parent.completeInsertion();
+        }
+      }
+
+    }
+
+    // Inserts a node with a given key and value into the subtree with
+    // this node as root
+
+    void insert(K key, V value) throws FoundException {
+
+      AVLNode leaf = this.regular_insert(key, value);
+      leaf.parent().completeInsertion();
+
+    }
+
+    // Returs the node storing the smallest value in the subtree with
+    // this node as root
+
+    private AVLNode min() {
+
+      if (this.left == null) {
+        return this;
+      } else {
+        return this.left.min();
+      }
+
+    }
+
+    // Peforms the regular part of a deletion of a value; the deepest node
+    // that was accessed, whose height may have changed, is returned as output
+
+    private AVLNode regular_delete(K key) throws NotFoundException {
+
+      if (key.compareTo(this.key) < 0) {
+        if (this.left != null) {
+          return this.left.regular_delete(key);
+        } else {
+          throw new NotFoundException();
+        }
+      } else if (key.compareTo(this.key) > 0) {
+        if (this.right != null) {
+          return this.right.regular_delete(key);
+        } else {
+          throw new NotFoundException();
+        }
+      } else if (this.left == null)  {
+        if (this.right == null) {   // Node storing the key is a leaf
+          AVLNode parent = this.parent;
+          if (parent != null) {
+            if (this.key.compareTo(parent.key()) < 0) {
+              parent.setLeft(null);
+            } else {
+              parent.setRight(null);
+            };
+            parent.updateSize();
+          } else {
+            root = null;
+          };
+          return parent;
+        } else {  // Node storing the key has a right chile but not a left
+          AVLNode parent = this.parent;
+          AVLNode x = this.right;
+          if (parent != null) {
+            if (this.key.compareTo(parent.key()) < 0) {
+              parent.setLeft(x);
+            } else {
+              parent.setRight(x);
+            };
+            parent.updateSize();
+          } else {
+            root = x;
+          };
+          x.setParent(parent);
+          return parent;
+        }
+      } else if (this.right == null) { // Node storing the key has a left
+        AVLNode parent = this.parent; // child but not a right
+        AVLNode x = this.left;
+        if (parent != null) {
+          if (this.key.compareTo(parent.key()) < 0) {
+            parent.setLeft(x);
+          } else {
+            parent.setRight(x);
+          };
+          parent.updateSize();
+        } else {
+           root = x;
+        };
+        x.setParent(parent);
+        return parent;
+      } else {  // Node storing the key has two children
+        AVLNode y = this.right.min();
+        this.key = y.key();
+        this.value = y.value();
+        AVLNode x = y.right();
+        AVLNode parent = y.parent();
+        if (x != null) {
+          x.setParent(parent);
+        };
+        if (y.key().compareTo(parent.key()) < 0) {
+          parent.setLeft(x);
+        } else {
+          parent.setRight(x);     
+        };
+        parent.updateSize();
+        return parent;
+      }
+  
+    }
+
+    // Completes a deletion, using rotations to correct balance factors
+    // until it is confirmed that the resulting tree is an AVL tree
+
+    private void completeDeletion() {
+
+      int oldHeight = this.height;
+      AVLNode current;
+      this.updateHeight();
+      if (this.balanceFactor() == 2) {
+        AVLNode beta = this.left();
+        if (beta.balanceFactor() == 1) {            // Left-Left Case
+          current = beta;                           // Root of subtree will be current
+          this.rotateRight();
+        } else if (beta.balanceFactor() == -1) {    // Left-Right Case
+          current = beta.right();                   // Root of subtree will be current
+          beta.rotateLeft();
+          this.rotateRight();
+        } else {                                    // Left-Equal Case
+          current = beta;                           // Root of subtree will be current
+          this.rotateRight();
+        }
+      } else if (this.balanceFactor() == -2) {
+        AVLNode beta = this.right();
+        if (beta.balanceFactor() == -1) {           // Right-Right Case
+          current = beta;                           // Root of subtree will be current
+          this.rotateLeft();
+        } else if (beta.balanceFactor() == 1) {     // Right-Left Case
+          current = beta.left();                    // Root of subtree will be current
+          beta.rotateRight();
+          this.rotateLeft();
+        } else {                                    // Right-Equal Case
+          current = beta;                           // Root of subtree will be current
+          this.rotateLeft();
+        }
+      } else {
+        current = this;
+      };;
+      if (oldHeight != current.height()) {    // Further adjustments may be needed
+        if (current.parent() != null) {
+          current.parent().completeDeletion();
+        }
+      }
+
+    }
+
+    // Deletes a node with a given key from the subtree with this node
+    // as root
+
+    void delete(K key) throws NotFoundException {
+
+      AVLNode deepest = this.regular_delete(key);
+      if (deepest != null) {
+        deepest.completeDeletion();
+      }
+      
+    }
+   
+  }
+
+  // Implements a ListIterator for the set of keys stored in this AVL tree
+
+  class listIterator implements ListIterator<K> {
+
+    // Data fields
+    private int nextIndex;
+
+    // Constructor
+
+    listIterator() {
+      this.nextIndex = 0;
+    }
+
+    // Reports whether there is a next key to list
+
+    public boolean hasNext() {
+      if (root != null) {
+        return (nextIndex < root.size());
+      } else {
+        return false;
+      }
+    }
+
+    // Reports the index of the next key that would be returned by
+    // a call to next(); returns the size of the sorted map if this iterator
+    // is at the end of the sequence of keys
+    
+    public int nextIndex() {
+      return this.nextIndex;
+    }
+
+    // Returns the next key to be listed; throws a NoSuchEleemntException
+    // if there is no such key
+
+    public K next() {
+      if (this.hasNext()) {
+        AVLNode node = root.get(this.nextIndex);
+        this.nextIndex = this.nextIndex + 1;
+        return node.key();
+      } else {
+        throw new NoSuchElementException();
+      }
+    }
+
+    public boolean hasPrevious() {
+      return (this.nextIndex > 0);
+    } 
+
+    // Returns the index of key that would returned by a call to previous();
+    // returns -1 if the iterator is at the beginning of this sequence of keys
+
+    public int previousIndex() {
+      return this.nextIndex - 1;
+    }
+
+    // Returns the previous key to be listed; throws a NoSuchElementException
+    // if there is no such key
+
+    public K previous() {
+      if (this.hasPrevious()) {
+        AVLNode node = root.get(this.nextIndex - 1);
+        this.nextIndex = this.nextIndex - 1;
+        return node.key();
+      } else {
+        throw new NoSuchElementException();
+      }
+    }
+      
+    // Optional operations for a ListIterator are not supported
+
+    public void add(K k) {
+      throw new UnsupportedOperationException();
+    }
+
+    public void remove() {
+      throw new UnsupportedOperationException();
+    }
+
+    public void set(K k) {
+      throw new UnsupportedOperationException();
+    } 
+
+  }
+
+
+  // Data fields
+  AVLNode root;
+
+  // Default constructor returns an empty AVL tree
+
+  public AVLSortedMap() {
+    this.root = null;
+  }
+
+  // Constructor used for testing
+
+  AVLSortedMap(K key, V value, AVLSortedMap<K, V> left, AVLSortedMap<K, V> right) {
+    this.root = new AVLNode(key, value);
+    if (left != null) {
+      this.root.setLeft(left.root());
+    } else {
+      this.root.setLeft(null);
+    };
+    if (right != null) {
+      this.root.setRight(right.root());
+    } else {
+      this.root.setRight(null);
+    };
+    int leftHeight, leftSize, rightHeight, rightSize;
+    if (this.root.left() == null) {
+      leftHeight = -1;
+      leftSize = 0;
+    } else {
+      leftHeight = this.root.left().height();
+      leftSize = this.root.left().size();
+      this.root.left().setParent(this.root);
+    };
+    if (this.root.right() == null) {
+      rightHeight = -1;
+      rightSize = 0;
+    } else {
+      rightHeight = this.root.right().height();
+      rightSize = this.root.right().size();
+      this.root.right().setParent(this.root);
+    };
+    if (leftHeight >= rightHeight) {
+      this.root.setHeight(leftHeight + 1);
+    } else {
+      this.root.setHeight(rightHeight + 1);
+    };
+    this.root.setSize(leftSize + rightSize + 1);
+  }
+
+  // Returns the root of this AVL tree; used for testing
+
+  AVLNode root() {
+    return this.root;
+  }
+
+  // Returns the size of this AVL tree
+  
+  public int size() {
+    if (this.root == null) {
+      return 0;
+    } else {
+      return this.root.size();
+    }
+  }
+
+  // Reports whether this AVL tree includes a node storing the given key k
+
+  public boolean defined(K k) {
+    if (this.root == null) {
+      return false;
+    } else {
+      try {
+        this.root.search(k);
+        return true;
+      } catch (NotFoundException ex) {
+        return false;
+      }
+    }
+  }
+
+  // Returns the value associated with a given key
+
+  public V get(K k) throws UndefinedException {
+    if (this.root == null) {
+      throw new UndefinedException();
+    } else {
+      try {
+        AVLNode node = this.root.search(k);
+        return node.value();
+      } catch (NotFoundException ex) {
+        throw new UndefinedException();
+      }
+    }
+  }
+
+  // Sets the value associated with a given key k to be a given value v
+
+  public void set(K k, V v) {
+    if (this.defined(k)) {
+      AVLNode node = this.root.search(k);
+      node.setValue(v);
+    } else {
+      if (this.root == null) {
+        this.root = new AVLNode(k, v);
+      } else {
+        this.root.insert(k, v);
+      }
+    }
+  }
+
+  // Unsets the value associated with a given k, if a value is defined for it
+
+  public void unset(K k) {
+    if (this.defined(k)) {
+      this.root.delete(k);
+    }
+  }
+   
+  // Returns the index of a given key k in the sorted map represented by this
+  // AVL tree; -1 is returned if the key is not found
+
+  public int indexOf (K k) {
+    if (this.root != null) {
+      try {
+        return(this.root.indexOf(k));
+      } catch (NoSuchElementException ex) {
+        return -1;
+      }
+    } else {
+      return -1;
+    }
+  }
+
+  // Returns the key with a given index in the sorted map represented by
+  // this AVL tree
+
+  public K get(int index) throws IndexOutOfBoundsException {
+    if (this.root != null) {
+      try {
+        AVLNode node = this.root.get(index);
+        return node.key();
+      } catch (NoSuchElementException ex) {
+        throw new IndexOutOfBoundsException();
+      }
+    } else {
+      throw new IndexOutOfBoundsException();
+    }
+  }
+
+  // Returns the largest key that is less than the input key in this AVL
+  // tree. A NoSuchElementException is thrown if the input key is less than
+  // or equal to all the keys in this tree.
+
+  public K before(K k) throws NoSuchElementException {
+    if (this.root != null) {
+      AVLNode node = this.root.before(k);
+      return node.key();
+    } else {
+      throw new NoSuchElementException();
+    }
+  }
+
+  public K after(K k) throws NoSuchElementException {
+    if (this.root != null) {
+      AVLNode node = this.root.after(k);
+      return node.key();
+    } else {
+      throw new NoSuchElementException();
+    }
+  }
+
+  // Provides an iterator over the set of keys stored in this AVL tree
+
+  public Iterator<K> iterator() {
+
+    return new listIterator();
+
+  }
+
+}
