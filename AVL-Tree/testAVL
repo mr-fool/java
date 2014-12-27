@@ -1,0 +1,24 @@
+#! /bin/tcsh
+
+echo 'Dynamic Tests for AVLSortedMap'
+echo ' '
+
+javac AVLUtils.java
+
+echo 'Tests for Searches'
+echo ' '
+javac testSearch.java
+java org.junit.runner.JUnitCore cpsc331.assignment3.testSearch
+echo ' '
+
+echo 'Tests for Insertions'
+echo ' '
+javac testInsert.java
+java org.junit.runner.JUnitCore cpsc331.assignment3.testInsert
+echo ' '
+
+echo 'Tests for Deletions'
+echo ' '
+javac testDelete.java
+java org.junit.runner.JUnitCore cpsc331.assignment3.testDelete
+echo ' '
