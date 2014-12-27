@@ -1,0 +1,7 @@
+#! /bin/tcsh
+
+echo 'Dynamic Tests for the Second  Randomized  Algorithm'
+echo ' '
+
+javac testRQuick2.java
+java org.junit.runner.JUnitCore cpsc331.assignment4.testRQuick2
