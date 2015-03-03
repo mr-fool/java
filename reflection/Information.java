@@ -33,8 +33,9 @@ public class Information   {
 	public static void printMethods(Class cl)   {   
 		Method[] methods = cl.getDeclaredMethods();   
 		for (Method m : methods)   {   
-			Class retType = m.getReturnType();   
-			String name = m.getDeclaredMethods();   
+			Class retType = m.getReturnType(); 
+			String name = m.getName().getDeclaredMethods();
+			//String name = m.getDeclaredMethods();   
 			System.out.println("The name of the method " + name);
   
        
