@@ -20,9 +20,10 @@ public class Information {
 			System.out.println("The project prefix: " + name);
 			ArrayList<String> methodList = new ArrayList<String>();
 			methodList = methods(cl);
-			for(String tmp: methodList) { 
+			/*for(String tmp: methodList) { 
 				System.out.println("method list " + tmp); 
-			}
+			}*/
+			methodReturnType("equal");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -47,7 +48,16 @@ public class Information {
 		}
 	return methodList;
 	}// end of method
-	public static void methodReturnType(ArrayList<String> methodList) {
-		
+	public static void methodReturnType(Method type) {
+		Class retType = type.getReturnType();
+		System.out.println("The return type is " + retType.getName());
 	}
 }
+/*javac "Information.java" (in directory: /home/mr-fool/Documents)
+Information.java:26: error: incompatible types: String cannot be converted to Method
+			methodReturnType("equal");
+			                 ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error
+Compilation failed.
+*/
