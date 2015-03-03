@@ -33,7 +33,7 @@ public class Information   {
 		Method[] methods = cl.getDeclaredMethods();   
 		for (Method m : methods)   {   
 			Class retType = m.getReturnType();   
-            String name = m.getDeclaredMethods();   
+			String name = m.getDeclaredMethods();   
 			System.out.println("The name of the method " + name);
   
        
@@ -46,14 +46,3 @@ public class Information   {
 		}   
 	}//end of method   
   }
-/*
-javac "Information.java" (in directory: /home/mr-fool/Documents)
-Information.java:36: error: cannot find symbol
-            String name = m.getDeclaredMethods();
-                           ^
-  symbol:   method getDeclaredMethods()
-  location: variable m of type Method
-1 error
-Compilation failed.
-
-*/
