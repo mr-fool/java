@@ -18,7 +18,11 @@ public class Information {
 			// print class name and superclass name (if != Object)
 			Class cl = Class.forName(name);
 			System.out.println("The project prefix: " + name);
-			printMethods(cl);
+			ArrayList<String> methodList = new ArrayList<String>();
+			methodList = methods(cl);
+			for(String tmp: methodList) { 
+				System.out.println("method list " + tmp); 
+			}
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -28,35 +32,22 @@ public class Information {
 		System.exit(0);
 	} // end of main
 
-	public static void printMethods(Class cl) {
+	public static ArrayList<String> methods(Class cl) {
+		ArrayList<String> methodList = new ArrayList<String>();
 		Method[] methods = cl.getDeclaredMethods();
 		for (Method m : methods) {
 			Class retType = m.getReturnType();
 			String name = m.getName();
-			// System.38out.println("The name of the method " + name);
-
+			// System.out.println("The name of the method " + name);
+			methodList.add(name);
 			// print parameter types
-			Class[] paramTypes = m.getParameterTypes();
+			/*Class[] paramTypes = m.getParameterTypes();
 			for (int j = 0; j < paramTypes.length; j++)
-				System.out.println(paramTypes[j].getName());
+				System.out.println(paramTypes[j].getName()); */
 		}
+	return methodList;
 	}// end of method
+	public static void methodReturnType(ArrayList<String> methodList) {
+		
+	}
 }
-
-
-/*Enter your project prefix 
-
-
-    java.lang.reflect.Method
-
-The project prefix: java.lang.reflect.Method
-java.lang.Object
-[Ljava.lang.Object;
-java.lang.Object
-java.lang.Class
-java.lang.StringBuilder
-java.lang.StringBuilder
-sun.reflect.MethodAccessor
-int
-int
-*/
