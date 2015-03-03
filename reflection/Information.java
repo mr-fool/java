@@ -4,7 +4,8 @@ import java.lang.reflect.*;
 
 public class Information   {   
 	public static void main(String[] args) {   
-    // read class name from command line args and if args is empty prompt user input   
+		// read class name from command line args and if args is empty prompt
+		// user input
 	String name;
 	if (args.length > 0)
 		name = args[0];   
