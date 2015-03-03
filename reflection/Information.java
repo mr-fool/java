@@ -48,14 +48,3 @@ public class Information   {
        }//end of method   
   
     }
-/*
-javac "Information.java" (in directory: /home/mr-fool/Documents)
-Information.java:37: error: cannot find symbol
-            String name = m.getDeclaredMethods();
-                           ^
-  symbol:   method getDeclaredMethods()
-  location: variable m of type Method
-1 error
-Compilation failed.
-
-*/
