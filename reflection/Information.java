@@ -48,3 +48,6 @@ public class Information   {
 		}   
 	}//end of method   
   }
+/*
+javac "Information.java" (in directory: /home/mr-fool/Documents)
+*/
