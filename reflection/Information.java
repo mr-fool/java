@@ -12,7 +12,7 @@ public class Information   {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter your project prefix ");
 		name = in.next();   
-    }   
+	}   
        
 	try  {   
 		// print class name and superclass name (if != Object)   
@@ -23,7 +23,7 @@ public class Information   {
 	}   
 	catch (ClassNotFoundException e)  {   
 		e.printStackTrace();   
-    } 
+	} 
 	catch (Exception e) {
 		e.printStackTrace();  
 	}  
@@ -41,9 +41,19 @@ public class Information   {
             Class[] paramTypes = m.getParameterTypes();   
             for (int j = 0; j < paramTypes.length; j++)   {    
                 System.out.println(paramTypes[j].getName());   
-             }   
+            }   
             
-          }   
-       }//end of method   
-  
-    }
+		}   
+	}//end of method   
+  }
+/*
+javac "Information.java" (in directory: /home/mr-fool/Documents)
+Information.java:36: error: cannot find symbol
+            String name = m.getDeclaredMethods();
+                           ^
+  symbol:   method getDeclaredMethods()
+  location: variable m of type Method
+1 error
+Compilation failed.
+
+*/
