@@ -23,7 +23,7 @@ public class Information {
 			/*for(String tmp: methodList) { 
 				System.out.println("method list " + tmp); 
 			}*/
-			methodReturnType("equal");
+			methodReturnType("equal",cl);
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -48,16 +48,24 @@ public class Information {
 		}
 	return methodList;
 	}// end of method
-	public static void methodReturnType(Method type) {
-		Class retType = type.getReturnType();
+	public static void methodReturnType(String type, Class cl) throws Exception{
+		Class retType = cl.getMethod(type).getReturnType();
 		System.out.println("The return type is " + retType.getName());
 	}
 }
-/*javac "Information.java" (in directory: /home/mr-fool/Documents)
-Information.java:26: error: incompatible types: String cannot be converted to Method
-			methodReturnType("equal");
-			                 ^
-Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
-1 error
-Compilation failed.
+/*
+javac "Information.java" (in directory: /home/mr-fool/Documents)
+Note: Information.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Compilation finished successfully.
+Enter your project prefix 
+
+
+    java.lang.reflect.Method
+
+The project prefix: java.lang.reflect.Method
+java.lang.NoSuchMethodException: java.lang.reflect.Method.equal()
+	at java.lang.Class.getMethod(Class.java:1778)
+	at Information.methodReturnType(Information.java:52)
+	at Information.main(Information.java:26)
 */
