@@ -5,31 +5,30 @@ import java.lang.reflect.*;
 public class Information   {   
 	public static void main(String[] args) {   
     // read class name from command line args and if args is empty prompt user input   
-    String name;   
-    if (args.length > 0)
+	String name;
+	if (args.length > 0)
 		name = args[0];   
-    else  {   
-		Scanner in = new Scanner(System.in);   
-        System.out.println("Enter your project prefix ");   
-        name = in.next();   
+	else  {   
+		Scanner in = new Scanner(System.in);
+		System.out.println("Enter your project prefix ");
+		name = in.next();   
     }   
        
-    try  {   
+	try  {   
 		// print class name and superclass name (if != Object)   
 		Class cl = Class.forName(name);   
 		System.out.println("The project prefix: " + name);
 		printMethods(cl);   
    
 	}   
-    catch (ClassNotFoundException e)  {   
+	catch (ClassNotFoundException e)  {   
 		e.printStackTrace();   
     } 
-    catch (Exception e) {
+	catch (Exception e) {
 		e.printStackTrace();  
 	}  
-     System.exit(0);   
+	System.exit(0);   
 }//end of main   
- 
 	public static void printMethods(Class cl)   {   
 		Method[] methods = cl.getDeclaredMethods();   
 		for (Method m : methods)   {   
