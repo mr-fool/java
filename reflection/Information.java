@@ -23,7 +23,7 @@ public class Information {
 			/*for(String tmp: methodList) { 
 				System.out.println("method list " + tmp); 
 			}*/
-			methodReturnType("equal",cl);
+			methodReturnType("equals",cl);
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -53,6 +53,7 @@ public class Information {
 		System.out.println("The return type is " + retType.getName());
 	}
 }
+
 /*
 javac "Information.java" (in directory: /home/mr-fool/Documents)
 Note: Information.java uses unchecked or unsafe operations.
