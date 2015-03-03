@@ -23,7 +23,7 @@ public class Information {
 			/*for(String tmp: methodList) { 
 				System.out.println("method list " + tmp); 
 			}*/
-			methodReturnType("equals",cl);
+			methodReturnType("getName",cl);
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -49,23 +49,19 @@ public class Information {
 	return methodList;
 	}// end of method
 	public static void methodReturnType(String type, Class cl) throws Exception{
-		Class retType = cl.getMethod(type).getReturnType();
+		Class retType = cl.getMethod(type,Object.class).getReturnType();
 		System.out.println("The return type is " + retType.getName());
 	}
 }
-
 /*
-javac "Information.java" (in directory: /home/mr-fool/Documents)
-Note: Information.java uses unchecked or unsafe operations.
-Note: Recompile with -Xlint:unchecked for details.
-Compilation finished successfully.
+java Information
 Enter your project prefix 
 
 
     java.lang.reflect.Method
 
 The project prefix: java.lang.reflect.Method
-java.lang.NoSuchMethodException: java.lang.reflect.Method.equal()
+java.lang.NoSuchMethodException: java.lang.reflect.Method.getName(java.lang.Object)
 	at java.lang.Class.getMethod(Class.java:1778)
 	at Information.methodReturnType(Information.java:52)
 	at Information.main(Information.java:26)
