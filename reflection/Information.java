@@ -20,11 +20,12 @@ public class Information {
 			System.out.println("The project prefix: " + name);
 			ArrayList<String> methodList = new ArrayList<String>();
 			methodList = methods(cl);
-			/*for(String tmp: methodList) { 
-				System.out.println("method list " + tmp); 
-			}*/
-			methodReturnType("getName",cl);
-
+			/*
+			 * for(String tmp: methodList) { System.out.println("method list " +
+			 * tmp); }
+			 */
+			methodReturn(name,"getName");
+			methodParameter(name,"getName");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -42,27 +43,35 @@ public class Information {
 			// System.out.println("The name of the method " + name);
 			methodList.add(name);
 			// print parameter types
-			/*Class[] paramTypes = m.getParameterTypes();
-			for (int j = 0; j < paramTypes.length; j++)
-				System.out.println(paramTypes[j].getName()); */
+			/*
+			 * Class[] paramTypes = m.getParameterTypes(); for (int j = 0; j <
+			 * paramTypes.length; j++)
+			 * System.out.println(paramTypes[j].getName());
+			 */
 		}
-	return methodList;
+		return methodList;
 	}// end of method
-	public static void methodReturnType(String type, Class cl) throws Exception{
-		Class retType = cl.getMethod(type,Object.class).getReturnType();
-		System.out.println("The return type is " + retType.getName());
+
+	public static void methodReturn(String className, String methodName) throws Exception{
+		List<Method> ms = Arrays.asList(Class.forName(className).getMethods());
+		for (Method m : ms) {
+			if (m.getName().equals(methodName)) {
+				System.out.println(m.getReturnType().toString());
+			}
+		}	
+	}// end method
+	public static void methodParameter(String className, String methodName) throws Exception{
+		List<Method> ms = Arrays.asList(Class.forName(className).getMethods());
+		for (Method m : ms) {
+			if (m.getName().equals(methodName)) {
+				Class[] paramTypes = m.getParameterTypes(); 
+				for (int j = 0; j < paramTypes.length; j++)   {   
+					if (j > 0) {
+						System.out.print(" ");  
+					} 
+                System.out.print(paramTypes[j].getName());   
+				}   
+			}
+		}	
 	}
 }
-/*
-java Information
-Enter your project prefix 
-
-
-    java.lang.reflect.Method
-
-The project prefix: java.lang.reflect.Method
-java.lang.NoSuchMethodException: java.lang.reflect.Method.getName(java.lang.Object)
-	at java.lang.Class.getMethod(Class.java:1778)
-	at Information.methodReturnType(Information.java:52)
-	at Information.main(Information.java:26)
-*/
