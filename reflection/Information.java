@@ -3,6 +3,8 @@
  * Core Java Volume I Fundamentals Eigth Edition page 222-224*/
 import java.util.*;
 import java.lang.reflect.*;
+import java.io.*;
+import java.net.*;
 
 public class Information {
 	public static void main(String[] args) {
@@ -13,12 +15,13 @@ public class Information {
 			name = args[0];
 		else {
 			Scanner in = new Scanner(System.in);
-			System.out.println("Enter your project prefix ");
+			System.out.println("Enter your jar location ");
 			name = in.next();
 		}
 
 		try {
 			// print class name and superclass name (if != Object)
+			//File f = new File(name);
 			Class cl = Class.forName(name);
 			System.out.println("The project prefix: " + name);
 			ArrayList<String> methodList = new ArrayList<String>();
@@ -27,8 +30,8 @@ public class Information {
 			 * for(String tmp: methodList) { System.out.println("method list " +
 			 * tmp); }
 			 */
-			methodReturn(name, "getName");
-			methodParameter(name, "equals");
+			//methodReturn(name, "getName");
+			//methodParameter(name, "equals");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
