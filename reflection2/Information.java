@@ -34,4 +34,13 @@ public class Information {
 		}
 		return false;
 	}//end method
+	public static void printAllFunction (String className) throws Exception{
+		Class cls = Class.forName(className);
+		Method[] methods = cls.getDeclaredMethods();
+		for (Method m : methods) {
+			String name = m.getName();
+			System.out.println("The method name is " + name);
+		}
+		
+	}
 }
