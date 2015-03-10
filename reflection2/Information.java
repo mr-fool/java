@@ -8,17 +8,18 @@ import java.io.*;
 import java.net.*;
 
 public class Information {
+	public Class cls;
 	public Information (String jar, String methodsClass){
 		try {
 			File file = new File(jar);
 			URL url = file.toURL();
 			URL[] urls = new URL[] {url};
 			ClassLoader cl = new URLClassLoader(urls);
-			Class cls = cl.loadClass(methodsClass);
+			this.cls = cl.loadClass(methodsClass);
 		}
 		catch (NoClassDefFoundError e) {
 			e.printStackTrace();
-			System  .exit(-6);
+			System.exit(-6);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -34,8 +35,7 @@ public class Information {
 		}
 		return false;
 	}//end method
-	public static void printAllFunction (String className) throws Exception{
-		Class cls = Class.forName(className);
+	public static void printAllFunction (Class cls) throws Exception{
 		Method[] methods = cls.getDeclaredMethods();
 		for (Method m : methods) {
 			String name = m.getName();
