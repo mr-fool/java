@@ -1,17 +1,17 @@
 package alarm;
-import java.text.ParseException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Alarm {
-
+	//get current time
 	public Calendar Time(){
 		Calendar cal = Calendar.getInstance();
     	cal.getTime();
     	System.out.println("current time is :" + cal.getTime());
 		return cal;
 	}
-	public void Alert(String alarmTime) {
+	public void Alert(String alarmTime) throws IOException, InterruptedException {
 		boolean waiting = true;
 		while(waiting == true ){
 			Calendar cal = Calendar.getInstance();
@@ -20,7 +20,10 @@ public class Alarm {
 				cal = Calendar.getInstance();
 			}
 			else {
-				System.out.println("It is time to wake up");
+				System.out.println("It's time to wake up");
+			    Runtime r = Runtime.getRuntime();
+				r.exec("mplayer /home/mr-fool/Music/*");
+				//Process p = Runtime.getRuntime().exec("mplayer /home/mr-fool/Music/*");
 				waiting = false;
 			}
 		}
