@@ -21,7 +21,7 @@ public class Alarm {
 			}
 			else {
 				System.out.println("It's time to wake up");
-			    Runtime r = Runtime.getRuntime();
+				Runtime r = Runtime.getRuntime();
 				r.exec("mplayer /home/mr-fool/Music/*");
 				//Process p = Runtime.getRuntime().exec("mplayer /home/mr-fool/Music/*");
 				waiting = false;
