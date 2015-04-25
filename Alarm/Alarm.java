@@ -15,7 +15,7 @@ public class Alarm {
 	public void Alert(String time,String alarmTime) {
 		Boolean waiting = true;
 		while (waiting == true) {
-			if (time == alarmTime){
+			if (time.equals(alarmTime)){
 				System.out.println("It is time to wake up");
 				waiting = false;
 			}
