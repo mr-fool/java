@@ -1,6 +1,7 @@
 package alarm;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Alarm {
@@ -21,9 +22,12 @@ public class Alarm {
 			}
 			else {
 				System.out.println("It's time to wake up");
-				Runtime r = Runtime.getRuntime();
-				r.exec("mplayer /home/mr-fool/Music/*");
-				//Process p = Runtime.getRuntime().exec("mplayer /home/mr-fool/Music/*");
+				ArrayList<String> args = new ArrayList<String>();
+				args.add ("mplayer"); // command name
+				args.add ("/home/mr-fool/Music/*"); // optional args added as separate list items
+				ProcessBuilder pb = new ProcessBuilder(args);
+				Process p = pb.start();
+				p.waitFor();
 				waiting = false;
 			}
 		}
