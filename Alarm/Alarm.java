@@ -1,7 +1,6 @@
 package alarm;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Alarm {
@@ -22,9 +21,9 @@ public class Alarm {
 			}
 			else {
 				System.out.println("It's time to wake up");
-				ProcessBuilder pb = new ProcessBuilder("mplayer /home/mr-fool/Music/*");
-				Process proc;
-				proc = pb.start();
+				ProcessBuilder p = new ProcessBuilder();
+				p.command("/usr/bin/mplayer", "Running.mp3");
+				p.start();
 				waiting = false;
 			}
 		}
