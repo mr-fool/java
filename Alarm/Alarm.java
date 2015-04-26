@@ -71,6 +71,6 @@ public class Alarm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		Timer t = new Timer().schedule(new TimerTask() { public void run() { /* do some shit */ }},setTime.getTime()););
+		Timer t = new Timer().schedule(new TimerTask() { public void run() { /* do some shit */ }},setTime.getTime()));
 	}
 }
