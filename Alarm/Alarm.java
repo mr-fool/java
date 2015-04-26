@@ -13,14 +13,14 @@ public class Alarm {
 		return cal;
 	}
 
-	public void Alert(String alarmTime,String date) {
+	public void Alert(String alarmTime,String date, String player, String music) {
 		//time
 		String hour = alarmTime.substring(0,alarmTime.lastIndexOf(":"));
 		String minute = alarmTime.substring(alarmTime.indexOf(":")+1);
 		int setHour = Integer.parseInt(hour);
 		int setMinute = Integer.parseInt(minute);
-		System.out.println("setHour "+ setHour);
-		System.out.println("setMinute "+ setMinute);
+		//System.out.println("setHour "+ setHour);
+		//System.out.println("setMinute "+ setMinute);
 		//date
 		String day = date.substring(0,date.indexOf(":"));
 		String month = date.substring(date.indexOf(":")+1,date.lastIndexOf(":"));
@@ -42,7 +42,7 @@ public class Alarm {
 		try {
 			Thread.sleep(difference);
 			ProcessBuilder p = new ProcessBuilder(); 
-			p.command("vlc", "/home/mr-fool/Music/ash.flac");
+			p.command(player,music);
 			p.start();
 		}
 		catch (InterruptedException e) {
