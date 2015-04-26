@@ -38,7 +38,8 @@ public class Alarm {
 		String minute = alarmTime.substring(alarmTime.indexOf(":")+1);
 		int setHour = Integer.parseInt(hour);
 		int setMinute = Integer.parseInt(minute);
-		
+		System.out.println("setHour "+ setHour);
+		System.out.println("setMinute "+ setMinute);
 		//date
 		String day = date.substring(0,date.indexOf(":"));
 		String month = date.substring(date.indexOf(":")+1,date.lastIndexOf(":"));
@@ -46,7 +47,9 @@ public class Alarm {
 		int setDay = Integer.parseInt(day);
 		int setMonth = Integer.parseInt(month);
 		int setYear = Integer.parseInt(year);
-		
+		System.out.println("setDay "+ setDay);
+		System.out.println("setMonth "+ setMonth);
+		System.out.println("setYear "+ setYear);
 		Calendar setTime = new GregorianCalendar(setYear,setMonth,setDay,setHour,setMinute,00);
 		setTime.set(Calendar.HOUR, setHour);
 		//setTime.set(Calendar.MINUTE, setMinute);
