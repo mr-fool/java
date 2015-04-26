@@ -13,21 +13,6 @@ public class Alarm {
 		return cal;
 	}
 
-	/*
-	 * public void Alert(String alarmTime) throws IOException,
-	 * InterruptedException { boolean waiting = true; while(waiting == true ){
-	 * Calendar cal = Calendar.getInstance(); SimpleDateFormat timeFormat = new
-	 * SimpleDateFormat("HH:mm"); if
-	 * (timeFormat.format(cal.getTime()).equals(alarmTime) == false) { cal =
-	 * Calendar.getInstance(); } else {
-	 * System.out.println("It's time to wake up"); ProcessBuilder p = new
-	 * ProcessBuilder(); p.command("vlc", "/home/mr-fool/Music/Hotarubi.mp3");
-	 * p.start();
-	 * 
-	 * waiting = false; } }
-	 * 
-	 * }
-	 */
 	public void Alert(String alarmTime,String date) {
 		//time
 		String hour = alarmTime.substring(0,alarmTime.lastIndexOf(":"));
