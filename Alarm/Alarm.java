@@ -58,11 +58,11 @@ public class Alarm {
 		//setTime.set(Calendar.MONTH, setMonth);
 		//setTime.set(Calendar.YEAR, setYear);
 		
-		//long difference = setTime.getTimeInMillis()- Calendar.getInstance().getTimeInMillis();
-		//System.out.println("currenct time " + Calendar.getInstance().getTimeInMillis());
-		//System.out.println("set time " + setTime.getTimeInMillis());
-		//System.out.println(difference);
-		/*try {
+		long difference = setTime.getTimeInMillis()- System.currentTimeMillis();
+		System.out.println("currenct time " + Calendar.getInstance().getTimeInMillis());
+		System.out.println("set time " + setTime.getTimeInMillis());
+		System.out.println(difference);
+		try {
 			Thread.sleep(difference);
 			ProcessBuilder p = new ProcessBuilder(); 
 			p.command("vlc", "/home/mr-fool/Music/ash.flac");
@@ -73,14 +73,14 @@ public class Alarm {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		new Timer().schedule(new TimerTask() { public void run() { ProcessBuilder p = new ProcessBuilder(); 
+		}
+		/*new Timer().schedule(new TimerTask() { public void run() { ProcessBuilder p = new ProcessBuilder(); 
 		p.command("vlc", "/home/mr-fool/Music/ash.flac");
 		try {
 			p.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} }},setTime.getTime());
+		} }},setTime.getTime());*/
 	}
 }
