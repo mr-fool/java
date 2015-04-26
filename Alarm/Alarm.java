@@ -22,7 +22,7 @@ public class Alarm {
 			else {
 				System.out.println("It's time to wake up");
 				ProcessBuilder p = new ProcessBuilder();
-				p.command("/usr/bin/mplayer", "Running.mp3");
+				p.command("/usr/bin/mplayer", "/home/mr-fool/Music/Running.mp3");
 				p.start();
 				waiting = false;
 			}
