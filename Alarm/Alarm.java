@@ -71,8 +71,13 @@ public class Alarm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		Timer t = new Timer().schedule(new TimerTask() { public void run() { ProcessBuilder p = new ProcessBuilder(); 
+		new Timer().schedule(new TimerTask() { public void run() { ProcessBuilder p = new ProcessBuilder(); 
 		p.command("vlc", "/home/mr-fool/Music/ash.flac");
-		p.start(); }},setTime.getTime()));
+		try {
+			p.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} }},setTime.getTime());
 	}
 }
