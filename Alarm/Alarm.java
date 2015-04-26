@@ -1,4 +1,3 @@
-//My input 23:40 25:4:2015
 package alarm;
 
 import java.io.IOException;
@@ -53,8 +52,8 @@ public class Alarm {
 		System.out.println("setYear "+ setYear);
 		Calendar setTime = new GregorianCalendar(setYear,setMonth,setDay,setHour,setMinute,00);
 		
-		//long difference = setTime.getTimeInMillis()- System.currentTimeMillis();
-		long difference = ;
+		long difference = setTime.getTimeInMillis()- Calendar.getInstance().getTimeInMillis();
+		
 		System.out.println("currenct time " + Calendar.getInstance().getTimeInMillis());
 		System.out.println("set time " + setTime.getTimeInMillis());
 		System.out.println(difference);
