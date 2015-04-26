@@ -50,7 +50,13 @@ public class Alarm {
 		System.out.println("setDay "+ setDay);
 		System.out.println("setMonth "+ setMonth);
 		System.out.println("setYear "+ setYear);
-		Calendar setTime = new GregorianCalendar(setYear,setMonth,setDay,setHour,setMinute,00);
+		Calendar setTime = Calendar.getInstance();
+		setTime.set(Calendar.HOUR, setHour);
+		setTime.set(Calendar.MINUTE, setMinute);
+		setTime.set(Calendar.SECOND, 00);
+		setTime.set(Calendar.DATE, setDay);
+		setTime.set(Calendar.MONTH, setMonth);
+		setTime.set(Calendar.YEAR, setYear);
 		
 		long difference = setTime.getTimeInMillis()- Calendar.getInstance().getTimeInMillis();
 		
