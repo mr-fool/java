@@ -85,3 +85,12 @@ public class Alarm {
 		} }},setTime.getTime());*/
 	}
 }
+/*Output
+setHour 23
+setMinute 53
+setDay 25
+setMonth 4
+setYear 2015
+currenct time 1430027506372
+set time 1432662780349
+2635273977*/
