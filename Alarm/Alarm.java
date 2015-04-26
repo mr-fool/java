@@ -3,6 +3,10 @@ package alarm;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Alarm {
 	// get current time
@@ -43,17 +47,19 @@ public class Alarm {
 		int setMonth = Integer.parseInt(month);
 		int setYear = Integer.parseInt(year);
 		
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR, setHour);
-		cal.set(Calendar.MINUTE, setMinute);
-		cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.DATE, setDay);
-		cal.set(Calendar.MONTH, setMonth);
-		cal.set(Calendar.YEAR, setYear);
-
-		long difference = cal.getTimeInMillis()- Calendar.getInstance().getTimeInMillis();
+		Calendar setTime = new GregorianCalendar(setYear,setMonth,setDay,setHour,setMinute,00);
+		setTime.set(Calendar.HOUR, setHour);
+		//setTime.set(Calendar.MINUTE, setMinute);
+		//setTime.set(Calendar.SECOND, 00);
+		//setTime.set(Calendar.DATE, setDay);
+		//setTime.set(Calendar.MONTH, setMonth);
+		//setTime.set(Calendar.YEAR, setYear);
+		
+		//long difference = setTime.getTimeInMillis()- Calendar.getInstance().getTimeInMillis();
+		//System.out.println("currenct time " + Calendar.getInstance().getTimeInMillis());
+		//System.out.println("set time " + setTime.getTimeInMillis());
 		//System.out.println(difference);
-		try {
+		/*try {
 			Thread.sleep(difference);
 			ProcessBuilder p = new ProcessBuilder(); 
 			p.command("vlc", "/home/mr-fool/Music/ash.flac");
@@ -64,6 +70,7 @@ public class Alarm {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		Timer t = new Timer().schedule(new TimerTask() { public void run() { /* do some shit */ }},setTime.getTime()););
 	}
 }
