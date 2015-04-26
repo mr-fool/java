@@ -1,3 +1,4 @@
+//My input 23:40 25:4:2015
 package alarm;
 
 import java.io.IOException;
