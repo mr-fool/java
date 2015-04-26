@@ -22,12 +22,9 @@ public class Alarm {
 			}
 			else {
 				System.out.println("It's time to wake up");
-				ArrayList<String> args = new ArrayList<String>();
-				args.add ("mplayer"); // command name
-				args.add ("/home/mr-fool/Music/*"); // optional args added as separate list items
-				ProcessBuilder pb = new ProcessBuilder(args);
-				Process p = pb.start();
-				p.waitFor();
+				ProcessBuilder pb = new ProcessBuilder("mplayer /home/mr-fool/Music/*");
+				Process proc;
+				proc = pb.start();
 				waiting = false;
 			}
 		}
