@@ -51,10 +51,10 @@ public class Alarm {
 		System.out.println("setMonth "+ setMonth);
 		System.out.println("setYear "+ setYear);
 		Calendar setTime = Calendar.getInstance();
-		setTime.set(Calendar.HOUR, setHour);
+		setTime.set(Calendar.HOUR_OF_DAY, setHour);
 		setTime.set(Calendar.MINUTE, setMinute);
 		setTime.set(Calendar.SECOND, 00);
-		setTime.set(Calendar.DATE, setDay);
+		setTime.set(Calendar.DAY_OF_MONTH, setDay);
 		setTime.set(Calendar.MONTH, setMonth);
 		setTime.set(Calendar.YEAR, setYear);
 		System.out.println("getInstance "+ Calendar.getInstance());
